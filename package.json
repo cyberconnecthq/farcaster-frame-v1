@@ -8,11 +8,27 @@
     "deploy": "vercel",
     "image": "node --loader ts-node/esm api/image"
   },
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "esnext",
+    "strict": true,
+    "baseUrl": "./",
+    "paths": {
+      "*": [
+        "*",
+        "*.ts",
+        "*.tsx",
+        "*.js",
+        "*.jsx"
+      ]
+    }
+  },
   "dependencies": {
     "@graphql-typed-document-node/core": "3.2.0",
     "@langchain/core": "^0.3.18",
     "@langchain/langgraph": "^0.2.22",
     "@langchain/openai": "^0.3.14",
+    "dotenv": "^16.4.5",
     "frog": "latest",
     "graphql-request": "^7.1.2",
     "hono": "^4"
