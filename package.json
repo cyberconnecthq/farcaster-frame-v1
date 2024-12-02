@@ -1,0 +1,26 @@
+{
+  "name": "raf-mafai",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "frog vercel-build",
+    "dev": "frog dev",
+    "deploy": "vercel",
+    "image": "node --loader ts-node/esm api/image"
+  },
+  "dependencies": {
+    "@graphql-typed-document-node/core": "3.2.0",
+    "@langchain/core": "^0.3.18",
+    "@langchain/langgraph": "^0.2.22",
+    "@langchain/openai": "^0.3.14",
+    "frog": "latest",
+    "graphql-request": "^7.1.2",
+    "hono": "^4"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "tsx": "^4.7.1",
+    "typescript": "^5.6.3",
+    "vercel": "^32.4.1"
+  }
+}
