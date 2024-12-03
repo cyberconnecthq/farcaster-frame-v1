@@ -20,7 +20,6 @@ export const app = new Frog<{ State: State }>({
     agentMsg:
       "Welcome to Raf MafAI! Let me ask you some questions to see what kind of Raf you are!",
     minted: false,
-    prize: false,
     threadId: "",
   },
 });

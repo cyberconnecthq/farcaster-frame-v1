@@ -8,15 +8,8 @@ export const chatFrame = async (
     State: State;
   }>
 ) => {
-  const {
-    buttonValue,
-    inputText,
-    status,
-    deriveState,
-    previousState: pstate,
-  } = c;
+  const { buttonValue, inputText, deriveState } = c;
 
-  const minted = pstate?.minted;
   let nftImage;
   const state = await deriveState(async (previousState) => {
     if (buttonValue === "start" || inputText) {
@@ -67,7 +60,7 @@ export const chatFrame = async (
     image: (
       <div style={wrapperStyle}>
         <img
-          src={minted ? "/hitman.png" : "/accountant.png"}
+          src={"/accountant.png"}
           width={200}
           height={200}
           style={{
@@ -116,14 +109,7 @@ export const chatFrame = async (
     ),
     intents: [
       <TextInput placeholder="Your question/answer..." />,
-      status !== "initial" && <Button value="send">Send</Button>,
-      status === "initial" && <Button value="start">Let's start</Button>,
-      !state.minted && (
-        <Button.Transaction target="/mint">Mint Your RAF</Button.Transaction>
-      ),
-      minted && state.prize && (
-        <Button.Transaction target="/claim">Claim Prize</Button.Transaction>
-      ),
+      <Button value="send">Send</Button>,
     ],
   });
 };

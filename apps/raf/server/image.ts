@@ -29,14 +29,3 @@ export async function generateImage(prompt: string, modelId: string) {
     // throw error;
   }
 }
-
-// (async () => {
-//   const prompt = "giraffe, wear blue jacket, red sun-glasses";
-//   const modelId = "503871f0-9a22-43eb-8c9a-41a41fffd785";
-//   try {
-//     const result = await generateImage(prompt, modelId);
-//     console.log("Generated image:", result);
-//   } catch (error) {
-//     console.error("Failed to generate image:", error);
-//   }
-// })();
