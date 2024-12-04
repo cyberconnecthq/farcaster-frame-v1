@@ -42,16 +42,6 @@ app.transaction("/claim", (c) => {
   });
 });
 
-app.transaction("/mint", (c) => {
-  return c.contract({
-    abi: erc1155Abi,
-    functionName: "mint",
-    args: [c.address, 1n, 1n, "0x"],
-    chainId: "eip155:11155111",
-    to: "0x46Cd434D643C3BafF7EED00c8206DF7269E5b073",
-  });
-});
-
 // @ts-ignore
 const isEdgeFunction = typeof EdgeFunction !== "undefined";
 const isProduction = isEdgeFunction || import.meta.env?.MODE !== "development";

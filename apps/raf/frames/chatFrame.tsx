@@ -109,7 +109,7 @@ export const chatFrame = async (
     ),
     intents: [
       <TextInput placeholder="Your question/answer..." />,
-      <Button value="send">Send</Button>,
+      <Button value="mint">Send</Button>,
     ],
   });
 };
