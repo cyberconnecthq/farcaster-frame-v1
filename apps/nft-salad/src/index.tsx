@@ -2,6 +2,7 @@ import { Button, Frog, parseEther } from "frog";
 import { devtools } from "frog/dev";
 import { serveStatic } from "frog/serve-static";
 import { randomBytes } from "crypto";
+import { yumeEngineAbi } from "../abis/yumeEngienAbi.js";
 
 export const app = new Frog({
   title: "Frog Frame",
@@ -71,9 +72,9 @@ async function getCalldata({
   return data.data.MintNftCalldata.data;
 }
 
-app.transaction("/mintNft", async (c) => {
-  //   const { nftId } = c.req.param();
-  //   console.log("🚀 ~ app.transaction ~ nftId:", nftId);
+app.transaction("/mintNft/:nftId", (c) => {
+  const { nftId } = c.req.param();
+  console.log("🚀 ~ app.transaction ~ nftId:", nftId);
   //   const { contractAddress, tokenId } = c.req.query();
   const { address } = c;
   console.log("🚀 ~ app.transaction ~ address:", address);
@@ -101,11 +102,27 @@ app.transaction("/mintNft", async (c) => {
   });
 });
 
-
 app.frame("/mint/:nftId", (c) => {
   const { buttonValue, status } = c;
   const { nftId } = c.req.param();
   // const { contractAddress, tokenId } = c.req.query();
+  return c.contract({
+    // contract: contractAddress,
+    address: address,
+    abi: yumeEngineAbi,
+    functionName: "mintWithEth",
+    args: [contractAddress, tokenId, address, 1, address, "0x"],
+    value: BigInt(parseEther((0.0002).toString())),
+    //@ts-ignore
+    chainId: "eip155:111557560",
+    to: contractAddress as `0x${string}`,
+  });
+});
+
+app.frame("/mint/:nftId", (c) => {
+  const { buttonValue, status } = c;
+  const { nftId } = c.req.param();
+  //   const { contractAddress, tokenId } = c.req.query();
   const contractAddress = "0x996D9E03309993bCF6De9aE24464CD87626fA86f";
   const tokenId = "9";
   const imageUrl =
