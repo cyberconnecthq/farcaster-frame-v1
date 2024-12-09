@@ -90,7 +90,7 @@ export async function getContactAddress({
 
 export async function getNftInfo({ id }: { id: string }) {
   const vars = {
-    id: "3bf6e66c-452b-4b09-ba5b-f0b88f0631ba",
+    id,
   };
   const body = JSON.stringify({
     query: `
@@ -140,13 +140,7 @@ export async function getNftInfo({ id }: { id: string }) {
   return data.data.nft.nft.metadata;
 }
 
-export async function getCrossMintFee({
-  selectedChainId,
-  targetChainId,
-}: {
-  selectedChainId: number;
-  targetChainId: number;
-}) {
+export async function getCrossMintFee() {
   // const relayGateHookContractAddress = await getContactAddress({
   //   name: "contract_cyber_relay_gate_hook_yume",
   //   chainid: String(selectedChainId),

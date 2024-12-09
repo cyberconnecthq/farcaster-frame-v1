@@ -15,7 +15,7 @@ import { handle } from "frog/next";
 export const app = new Frog<{ State: State }>({
   title: "Frog Frame",
   imageAspectRatio: "1:1",
-  basePath: "/api",
+  basePath: "/",
   imageOptions: { width: 760, height: 760 },
   initialState: {
     nftInfo: {
@@ -34,10 +34,10 @@ export const app = new Frog<{ State: State }>({
 const targetChainId = cyberTestnet.id;
 const selectedChainId = optimismSepolia.id;
 
-app.transaction("/mintNft", async (c) => {
-  // const { nftId } = c.req.param();
+app.transaction("/mintNft/:nftId", async (c) => {
+  const { nftId } = c.req.param();
   const data = await getNftInfo({
-    id: "",
+    id: nftId,
   });
   const { address } = c;
 
@@ -49,10 +49,7 @@ app.transaction("/mintNft", async (c) => {
     selectedChain: 11155420,
   });
 
-  const crossMintFee = await getCrossMintFee({
-    targetChainId,
-    selectedChainId,
-  });
+  const crossMintFee = await getCrossMintFee();
 
   const engineContractAddress = await getContactAddress({
     name: "contract_yume_engine",
@@ -79,10 +76,10 @@ app.transaction("/mintNft", async (c) => {
   });
 });
 
-app.frame("/", async (c) => {
-  // const { nftId } = c.req.param();
+app.frame("/mint/:nftId", async (c) => {
+  const { nftId } = c.req.param();
   const data = await getNftInfo({
-    id: "",
+    id: nftId,
   });
 
   return c.res({
@@ -105,7 +102,12 @@ app.frame("/", async (c) => {
       </div>
     ),
     intents: [
-      <Button.Transaction target={`/mintNft`}>Mint</Button.Transaction>,
+      <Button.Transaction target={`/mintNft/${nftId}`}>
+        Mint
+      </Button.Transaction>,
+      <Button.Link href={`https://stg.iro.xyz/mint/${nftId}`}>
+        View on Iro
+      </Button.Link>,
     ],
   });
 });
