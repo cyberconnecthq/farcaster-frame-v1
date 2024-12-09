@@ -9,7 +9,7 @@ import {
   getNftInfo,
   getCrossMintFee,
 } from "../server/service.js";
-import { State } from "../types.js";
+import { selectedChainId, State } from "../types.js";
 import { handle } from "frog/next";
 
 export const app = new Frog<{ State: State }>({
@@ -45,7 +45,7 @@ app.transaction("/mintNft/:nftId", async (c) => {
     tokenId: data.tokenId,
     address,
     refer: address,
-    selectedChain: 11155420,
+    selectedChain: selectedChainId,
   });
 
   const crossMintFee = await getCrossMintFee();
