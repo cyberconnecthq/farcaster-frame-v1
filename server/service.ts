@@ -1,7 +1,7 @@
 import { parseEther } from "viem";
 import { randomBytes } from "crypto";
 import { client } from "./client.js";
-import { relayGateHookAbi } from "../abis/relayGateHookAbi.js";
+import { relayGateHookAbi } from "../../../abis/relayGateHookAbi.js";
 
 function generateRequestId(): string {
   return "0x" + randomBytes(32).toString("hex"); // Generates a 64-character hex string (32 bytes)
@@ -90,7 +90,7 @@ export async function getContactAddress({
 
 export async function getNftInfo({ id }: { id: string }) {
   const vars = {
-    id,
+    id: "3bf6e66c-452b-4b09-ba5b-f0b88f0631ba",
   };
   const body = JSON.stringify({
     query: `

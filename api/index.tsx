@@ -1,7 +1,7 @@
 import { Button, Frog, parseEther } from "frog";
 import { devtools } from "frog/dev";
 import { serveStatic } from "frog/serve-static";
-import { optimismSepolia } from "viem/chains";
+import { cyberTestnet, optimismSepolia } from "viem/chains";
 import { relayGateAbi } from "../abis/relayGateAbi.js";
 import {
   getContactAddress,
@@ -9,19 +9,35 @@ import {
   getNftInfo,
   getCrossMintFee,
 } from "../server/service.js";
-import { State, targetChainId, selectedChainId } from "./types.js";
+import { State } from "../types.js";
 import { handle } from "frog/next";
 
 export const app = new Frog<{ State: State }>({
   title: "Frog Frame",
   imageAspectRatio: "1:1",
+  basePath: "/api",
   imageOptions: { width: 760, height: 760 },
+  initialState: {
+    nftInfo: {
+      contract: "",
+      tokenId: "",
+      image: "",
+      name: "",
+      description: "",
+      chainId: "",
+      ethPrice: "",
+      usdPrice: "",
+    },
+  },
 });
 
-app.transaction("/mintNft/:nftId", async (c) => {
-  const { nftId } = c.req.param();
+const targetChainId = cyberTestnet.id;
+const selectedChainId = optimismSepolia.id;
+
+app.transaction("/mintNft", async (c) => {
+  // const { nftId } = c.req.param();
   const data = await getNftInfo({
-    id: nftId,
+    id: "",
   });
   const { address } = c;
 
@@ -47,7 +63,7 @@ app.transaction("/mintNft/:nftId", async (c) => {
     chainId: String(targetChainId),
   });
 
-  console.log("🚀 ~ contract params: ", [
+  console.log("🚀 ~ app.transaction ~ contract params: ", [
     res.requestId,
     targetChainId,
     engineContractAddress,
@@ -63,10 +79,10 @@ app.transaction("/mintNft/:nftId", async (c) => {
   });
 });
 
-app.frame("/mint/:nftId", async (c) => {
-  const { nftId } = c.req.param();
+app.frame("/", async (c) => {
+  // const { nftId } = c.req.param();
   const data = await getNftInfo({
-    id: nftId,
+    id: "",
   });
 
   return c.res({
@@ -89,12 +105,7 @@ app.frame("/mint/:nftId", async (c) => {
       </div>
     ),
     intents: [
-      <Button.Transaction target={`/mintNft/${nftId}`}>
-        Mint
-      </Button.Transaction>,
-      <Button.Link href={`https://stg.iro.xyz/mint/${nftId}`}>
-        View on Iro
-      </Button.Link>,
+      <Button.Transaction target={`/mintNft`}>Mint</Button.Transaction>,
     ],
   });
 });
