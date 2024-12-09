@@ -15,7 +15,7 @@ import { handle } from "frog/next";
 export const app = new Frog<{ State: State }>({
   title: "Frog Frame",
   imageAspectRatio: "1:1",
-  basePath: "/",
+  basePath: "/api",
   imageOptions: { width: 760, height: 760 },
   initialState: {
     nftInfo: {
