@@ -90,7 +90,7 @@ export async function getContactAddress({
 
 export async function getNftInfo({ id }: { id: string }) {
   const vars = {
-    id,
+    id: "3bf6e66c-452b-4b09-ba5b-f0b88f0631ba",
   };
   const body = JSON.stringify({
     query: `
