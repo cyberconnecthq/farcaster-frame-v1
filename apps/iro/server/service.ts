@@ -65,10 +65,10 @@ export async function getCalldata({
 
 export async function getContactAddress({
   name,
-  chainid,
+  chainId,
 }: {
   name: string;
-  chainid: string;
+  chainId: string;
 }) {
   const req = new Request(
     `https://api.stg.cyberconnect.dev/heracles/contracts?contract_names=${name}`,
@@ -85,11 +85,13 @@ export async function getContactAddress({
 
   const res = await fetch(req);
   const { data } = await res.json();
-  return data?.list?.[0]?.chain_map?.[chainid]?.address;
+  return data?.list?.[0]?.chain_map?.[chainId]?.address;
 }
 
 export async function getNftInfo({ id }: { id: string }) {
-  const vars = { id: "3bf6e66c-452b-4b09-ba5b-f0b88f0631ba" };
+  const vars = {
+    id,
+  };
   const body = JSON.stringify({
     query: `
       query nft($id: ID!) {

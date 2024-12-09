@@ -1,7 +1,7 @@
 import { Button, Frog, parseEther } from "frog";
 import { devtools } from "frog/dev";
 import { serveStatic } from "frog/serve-static";
-import { cyberTestnet, optimismSepolia } from "viem/chains";
+import { optimismSepolia } from "viem/chains";
 import { relayGateAbi } from "../abis/relayGateAbi.js";
 import {
   getContactAddress,
@@ -9,29 +9,14 @@ import {
   getNftInfo,
   getCrossMintFee,
 } from "../server/service.js";
-import { State } from "./types.js";
+import { State, targetChainId, selectedChainId } from "./types.js";
 import { handle } from "frog/next";
 
 export const app = new Frog<{ State: State }>({
   title: "Frog Frame",
   imageAspectRatio: "1:1",
   imageOptions: { width: 760, height: 760 },
-  initialState: {
-    nftInfo: {
-      contract: "",
-      tokenId: "",
-      image: "",
-      name: "",
-      description: "",
-      chainId: "",
-      ethPrice: "",
-      usdPrice: "",
-    },
-  },
 });
-
-const targetChainId = cyberTestnet.id;
-const selectedChainId = optimismSepolia.id;
 
 app.transaction("/mintNft/:nftId", async (c) => {
   const { nftId } = c.req.param();
@@ -55,14 +40,14 @@ app.transaction("/mintNft/:nftId", async (c) => {
 
   const engineContractAddress = await getContactAddress({
     name: "contract_yume_engine",
-    chainid: String(targetChainId),
+    chainId: String(targetChainId),
   });
   const relayGateContractAddress = await getContactAddress({
     name: "contract_cyber_relay_gate_yume",
-    chainid: String(targetChainId),
+    chainId: String(targetChainId),
   });
 
-  console.log("🚀 ~ app.transaction ~ contract params: ", [
+  console.log("🚀 ~ contract params: ", [
     res.requestId,
     targetChainId,
     engineContractAddress,
@@ -107,6 +92,9 @@ app.frame("/mint/:nftId", async (c) => {
       <Button.Transaction target={`/mintNft/${nftId}`}>
         Mint
       </Button.Transaction>,
+      <Button.Link href={`https://stg.iro.xyz/mint/${nftId}`}>
+        View on Iro
+      </Button.Link>,
     ],
   });
 });

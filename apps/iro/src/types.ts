@@ -1,3 +1,5 @@
+import { cyberTestnet, optimismSepolia } from "viem/chains";
+
 export type NftInfo = {
   name: string;
   description: string;
@@ -12,3 +14,6 @@ export type NftInfo = {
 export type State = {
   nftInfo: NftInfo;
 };
+
+export const targetChainId = cyberTestnet.id;
+export const selectedChainId = optimismSepolia.id;
