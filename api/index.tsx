@@ -11,6 +11,7 @@ import {
 } from "../server/service.js";
 import { selectedChainId, State } from "../types.js";
 import { handle } from "frog/next";
+import { Address } from "viem";
 
 export const app = new Frog<{ State: State }>({
   title: "Frog Frame",
@@ -35,6 +36,7 @@ const targetChainId = cyberTestnet.id;
 
 app.transaction("/mintNft/:nftId", async (c) => {
   const { nftId } = c.req.param();
+  const refer = c.req.query("refer") as Address;
   const data = await getNftInfo({
     id: nftId,
   });
@@ -44,7 +46,7 @@ app.transaction("/mintNft/:nftId", async (c) => {
     nftAddress: data.contract,
     tokenId: data.tokenId,
     address,
-    refer: address,
+    refer: refer || address,
     selectedChain: selectedChainId,
   });
 
@@ -77,6 +79,7 @@ app.transaction("/mintNft/:nftId", async (c) => {
 
 app.frame("/mint/:nftId", async (c) => {
   const { nftId } = c.req.param();
+  const referral = c.req.query("refer");
   const data = await getNftInfo({
     id: nftId,
   });
@@ -101,7 +104,7 @@ app.frame("/mint/:nftId", async (c) => {
       </div>
     ),
     intents: [
-      <Button.Transaction target={`/mintNft/${nftId}`}>
+      <Button.Transaction target={`/mintNft/${nftId}?refer=${referral}`}>
         Mint
       </Button.Transaction>,
       <Button.Link href={`https://stg.iro.xyz/mint/${nftId}`}>
