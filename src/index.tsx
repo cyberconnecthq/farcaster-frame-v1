@@ -77,9 +77,10 @@ app.transaction("/mintNft", async (c) => {
 });
 
 app.frame("/mint", async (c) => {
-  const nftId = c.req.query("nftId") as string;
+  // const nftId = c.req.query("nftId") as string;
+  const nftId = "3bf6e66c-452b-4b09-ba5b-f0b88f0631ba";
   const data = await getNftInfo({
-    id: nftId,
+    id: "3bf6e66c-452b-4b09-ba5b-f0b88f0631ba",
   });
 
   return c.res({
