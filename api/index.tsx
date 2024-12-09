@@ -32,10 +32,9 @@ export const app = new Frog<{ State: State }>({
 });
 
 const targetChainId = cyberTestnet.id;
-const selectedChainId = optimismSepolia.id;
 
 app.transaction("/mintNft/:nftId", async (c) => {
-  const nftId = c.req.query("nftId") as string;
+  const { nftId } = c.req.param();
   const data = await getNftInfo({
     id: nftId,
   });
@@ -77,7 +76,7 @@ app.transaction("/mintNft/:nftId", async (c) => {
 });
 
 app.frame("/mint/:nftId", async (c) => {
-  const nftId = c.req.query("nftId") as string;
+  const { nftId } = c.req.param();
   const data = await getNftInfo({
     id: nftId,
   });
