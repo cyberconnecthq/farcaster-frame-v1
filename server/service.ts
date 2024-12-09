@@ -1,7 +1,7 @@
 import { parseEther } from "viem";
 import { randomBytes } from "crypto";
 import { client } from "./client.js";
-import { relayGateHookAbi } from "../abis/relayGateHookAbi.js";
+import { relayGateHookAbi } from "../../../abis/relayGateHookAbi.js";
 
 function generateRequestId(): string {
   return "0x" + randomBytes(32).toString("hex"); // Generates a 64-character hex string (32 bytes)
