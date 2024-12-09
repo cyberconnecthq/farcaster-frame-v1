@@ -34,7 +34,7 @@ export const app = new Frog<{ State: State }>({
 const targetChainId = cyberTestnet.id;
 const selectedChainId = optimismSepolia.id;
 
-app.transaction("/mintNft", async (c) => {
+app.transaction("/mintNft/:nftId", async (c) => {
   const nftId = c.req.query("nftId") as string;
   const data = await getNftInfo({
     id: nftId,
@@ -77,10 +77,9 @@ app.transaction("/mintNft", async (c) => {
 });
 
 app.frame("/mint", async (c) => {
-  // const nftId = c.req.query("nftId") as string;
-  const nftId = "3bf6e66c-452b-4b09-ba5b-f0b88f0631ba";
+  const nftId = c.req.query("nftId") as string;
   const data = await getNftInfo({
-    id: "3bf6e66c-452b-4b09-ba5b-f0b88f0631ba",
+    id: nftId,
   });
 
   return c.res({
@@ -103,7 +102,7 @@ app.frame("/mint", async (c) => {
       </div>
     ),
     intents: [
-      <Button.Transaction target={`/mintNft?nftId=${nftId}`}>
+      <Button.Transaction target={`/mintNft/${nftId}`}>
         Mint
       </Button.Transaction>,
       <Button.Link href={`https://stg.iro.xyz/mint/${nftId}`}>
