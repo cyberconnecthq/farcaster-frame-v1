@@ -9,38 +9,27 @@ import {
   getNftInfo,
   getCrossMintFee,
 } from "../server/service.js";
-import { selectedChainId, State } from "../types.js";
+import { selectedChainId } from "../types.js";
 import { handle } from "frog/next";
-import { Address } from "viem";
 
-export const app = new Frog<{ State: State }>({
+export const app = new Frog({
   title: "Frog Frame",
   imageAspectRatio: "1:1",
   basePath: "/api",
   imageOptions: { width: 760, height: 760 },
-  initialState: {
-    nftInfo: {
-      contract: "",
-      tokenId: "",
-      image: "",
-      name: "",
-      description: "",
-      chainId: "",
-      ethPrice: "",
-      usdPrice: "",
-    },
-  },
 });
 
 const targetChainId = cyberTestnet.id;
 
 app.transaction("/mintNft/:nftId", async (c) => {
   const { nftId } = c.req.param();
-  const refer = c.req.query("refer") as Address;
+  const { address } = c;
+  const referAddress = c.req.query("refer");
+  const refer =
+    referAddress && referAddress != "undefined" ? referAddress : address;
   const data = await getNftInfo({
     id: nftId,
   });
-  const { address } = c;
 
   const res = await getCalldata({
     nftAddress: data.contract,

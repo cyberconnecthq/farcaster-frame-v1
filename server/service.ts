@@ -1,7 +1,5 @@
 import { parseEther } from "viem";
 import { randomBytes } from "crypto";
-import { client } from "./client.js";
-import { relayGateHookAbi } from "../../../abis/relayGateHookAbi.js";
 
 function generateRequestId(): string {
   return "0x" + randomBytes(32).toString("hex"); // Generates a 64-character hex string (32 bytes)
@@ -32,6 +30,7 @@ export async function getCalldata({
       mintReferral: refer || "0x1F71D92A46Ab596ce22514A6f12C3D95cd51A30f", //it's our refer address
     },
   };
+  console.log("🚀 ~ getCallData vars", vars);
   const body = JSON.stringify({
     query: `
       mutation MintNftCalldata($input:MintNftCalldataInput!) {
@@ -59,7 +58,7 @@ export async function getCalldata({
   });
   const res = await fetch(req);
   const data = await res.json();
-  console.log("🚀 ~ getCalldata ~ data:", data);
+  console.log("🚀 ~ getCalldata ~ data:", JSON.stringify(data));
   return data.data.MintNftCalldata.data;
 }
 
