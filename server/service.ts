@@ -149,26 +149,26 @@ export async function getNftInfo({ id }: { id: string }) {
 }
 
 export async function getCrossMintFee() {
-  // console.log("🚀 ~ app.transaction ~ start");
-  // const relayGateHookContractAddress = await getContactAddress({
-  //   name: "contract_cyber_relay_gate_hook_yume",
-  //   chainId: String(selectedChainId),
-  // });
-  // const readRes = (await client.readContract({
-  //   address: relayGateHookContractAddress || "0x",
-  //   abi: relayGateHookAbi,
-  //   functionName: "mintFeeConfigs",
-  //   args: [targetChainId],
-  // })) as { data: any };
-  // const crossMintFeeData = readRes.data;
-  // console.log("🚀 ~ app.transaction ~ cross mint data", crossMintFeeData);
+  console.log("🚀 ~ app.transaction ~ start");
+  const relayGateHookContractAddress = await getContactAddress({
+    name: "contract_cyber_relay_gate_hook_yume",
+    chainId: String(selectedChainId),
+  });
+  const readRes = (await client.readContract({
+    address: relayGateHookContractAddress || "0x",
+    abi: relayGateHookAbi,
+    functionName: "mintFeeConfigs",
+    args: [targetChainId],
+  })) as { data: any };
+  const crossMintFeeData = readRes.data;
+  console.log("🚀 ~ app.transaction ~ cross mint data", crossMintFeeData);
 
-  // const crossMintFee =
-  //   Array.isArray(crossMintFeeData) && crossMintFeeData.length > 2
-  //     ? crossMintFeeData[2]
-  //     : BigInt(0);
-  // console.log("🚀 ~ app.transaction ~ cross mint fee", crossMintFee);
+  const crossMintFee =
+    Array.isArray(crossMintFeeData) && crossMintFeeData.length > 2
+      ? crossMintFeeData[2]
+      : BigInt(0);
+  console.log("🚀 ~ app.transaction ~ cross mint fee", crossMintFee);
 
-  // return crossMintFee;
-  return 100000000000000n;
+  return crossMintFee;
+  // return 100000000000000n;
 }
