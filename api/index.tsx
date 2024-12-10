@@ -1,7 +1,6 @@
 import { Button, Frog, parseEther } from "frog";
 import { devtools } from "frog/dev";
 import { serveStatic } from "frog/serve-static";
-import { cyberTestnet, optimismSepolia } from "viem/chains";
 import { relayGateAbi } from "../abis/relayGateAbi.js";
 import {
   getContactAddress,
@@ -9,8 +8,9 @@ import {
   getNftInfo,
   getCrossMintFee,
 } from "../server/service.js";
-import { selectedChainId } from "../types.js";
+import { selectedChainId, targetChainId } from "../types.js";
 import { handle } from "frog/next";
+import { Address, formatEther } from "viem";
 
 export const app = new Frog({
   title: "Frog Frame",
@@ -19,24 +19,24 @@ export const app = new Frog({
   imageOptions: { width: 760, height: 760 },
 });
 
-const targetChainId = cyberTestnet.id;
-
 app.transaction("/mintNft/:nftId", async (c) => {
   const { nftId } = c.req.param();
   const { address } = c;
   const referAddress = c.req.query("refer");
   const refer =
-    referAddress && referAddress != "undefined" ? referAddress : address;
+    referAddress && referAddress != "undefined" ? referAddress : undefined;
   const data = await getNftInfo({
     id: nftId,
   });
+  const nftPrice = Number(formatEther(BigInt(data.ethPrice || "0")));
 
   const res = await getCalldata({
     nftAddress: data.contract,
     tokenId: data.tokenId,
     address,
-    refer: refer || address,
+    refer: refer,
     selectedChain: selectedChainId,
+    price: nftPrice,
   });
 
   const crossMintFee = await getCrossMintFee();
@@ -60,9 +60,9 @@ app.transaction("/mintNft/:nftId", async (c) => {
     abi: relayGateAbi,
     functionName: "relay",
     args: [res.requestId, targetChainId, engineContractAddress, res.data],
-    chainId: `eip155:${optimismSepolia.id}`,
-    to: relayGateContractAddress as `0x${string}`,
-    value: BigInt(parseEther((0.0002).toString())) + BigInt(crossMintFee),
+    chainId: `eip155:${selectedChainId}`,
+    to: relayGateContractAddress as Address,
+    value: BigInt(parseEther(nftPrice.toString())) + BigInt(crossMintFee),
   });
 });
 

@@ -1,5 +1,8 @@
-import { parseEther } from "viem";
+import { erc20Abi, parseEther } from "viem";
 import { randomBytes } from "crypto";
+import { selectedChainId, targetChainId } from "../types.js";
+import { client } from "./client.js";
+import { relayGateHookAbi } from "../abis/relayGateHookAbi.js";
 
 function generateRequestId(): string {
   return "0x" + randomBytes(32).toString("hex"); // Generates a 64-character hex string (32 bytes)
@@ -11,12 +14,14 @@ export async function getCalldata({
   address,
   refer,
   selectedChain,
+  price,
 }: {
   nftAddress: string;
   tokenId: string;
   address: string;
-  refer: string;
+  refer?: string;
   selectedChain: number;
+  price: number;
 }) {
   const vars = {
     input: {
@@ -25,7 +30,7 @@ export async function getCalldata({
       nft: nftAddress,
       tokenId: tokenId,
       to: address || "0x",
-      price: parseEther((0.0002 * Number(1)).toString()).toString(),
+      price: parseEther(price.toString()).toString(),
       sourceChain: selectedChain,
       mintReferral: refer || "0x1F71D92A46Ab596ce22514A6f12C3D95cd51A30f", //it's our refer address
     },
@@ -136,20 +141,24 @@ export async function getNftInfo({ id }: { id: string }) {
   const res = await fetch(req);
   const data = await res.json();
 
+  console.log(
+    "🚀 ~ getNftInfo ~ data:",
+    JSON.stringify(data.data.nft.nft.metadata)
+  );
   return data.data.nft.nft.metadata;
 }
 
 export async function getCrossMintFee() {
+  // console.log("🚀 ~ app.transaction ~ start");
   // const relayGateHookContractAddress = await getContactAddress({
   //   name: "contract_cyber_relay_gate_hook_yume",
-  //   chainid: String(selectedChainId),
+  //   chainId: String(selectedChainId),
   // });
-
   // const readRes = (await client.readContract({
   //   address: relayGateHookContractAddress || "0x",
   //   abi: relayGateHookAbi,
   //   functionName: "mintFeeConfigs",
-  //   args: [String(targetChainId)],
+  //   args: [targetChainId],
   // })) as { data: any };
   // const crossMintFeeData = readRes.data;
   // console.log("🚀 ~ app.transaction ~ cross mint data", crossMintFeeData);
@@ -160,5 +169,6 @@ export async function getCrossMintFee() {
   //     : BigInt(0);
   // console.log("🚀 ~ app.transaction ~ cross mint fee", crossMintFee);
 
+  // return crossMintFee;
   return 100000000000000n;
 }
