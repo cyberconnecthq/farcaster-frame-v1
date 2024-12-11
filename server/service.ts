@@ -51,7 +51,7 @@ export async function getCalldata({
       `,
     variables: vars,
   });
-  const req = new Request("https://api.stg.cyberconnect.dev/yume/", {
+  const req = new Request("https://api.stg.cyberconnect.dev/iro/", {
     method: "POST",
     headers: {
       "Accept-Encoding": "gzip, deflate, br",
@@ -128,7 +128,7 @@ export async function getNftInfo({ id }: { id: string }) {
       `,
     variables: vars,
   });
-  const req = new Request("https://api.stg.cyberconnect.dev/yume/", {
+  const req = new Request("https://api.stg.cyberconnect.dev/iro/", {
     method: "POST",
     headers: {
       "Accept-Encoding": "gzip, deflate, br",
