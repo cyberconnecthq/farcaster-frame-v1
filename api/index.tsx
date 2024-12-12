@@ -99,7 +99,7 @@ app.frame("/mint/:nftId", async (c) => {
       <Button.Transaction target={`/mintNft/${nftId}?refer=${referral}`}>
         Mint
       </Button.Transaction>,
-      <Button.Link href={process.env.NEXT_PUBLIC_IRO_PUBLIC_SITE_URL as string}>
+      <Button.Link href={`${process.env.NEXT_PUBLIC_IRO_PUBLIC_SITE_URL as string}/mint/${nftId}`}>
         View on Iro
       </Button.Link>,
     ],
