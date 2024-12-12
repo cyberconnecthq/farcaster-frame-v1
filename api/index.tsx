@@ -1,3 +1,6 @@
+import { config } from "dotenv";
+config();
+
 import { Button, Frog, parseEther } from "frog";
 import { devtools } from "frog/dev";
 import { serveStatic } from "frog/serve-static";
@@ -96,7 +99,7 @@ app.frame("/mint/:nftId", async (c) => {
       <Button.Transaction target={`/mintNft/${nftId}?refer=${referral}`}>
         Mint
       </Button.Transaction>,
-      <Button.Link href={`https://stg.iro.xyz/mint/${nftId}`}>
+      <Button.Link href={process.env.NEXT_PUBLIC_IRO_PUBLIC_SITE_URL as string}>
         View on Iro
       </Button.Link>,
     ],

@@ -1,8 +1,7 @@
-import { erc20Abi, parseEther } from "viem";
+import { config } from "dotenv";
+config();
+import { parseEther } from "viem";
 import { randomBytes } from "crypto";
-import { selectedChainId, targetChainId } from "../types.js";
-import { client } from "./client.js";
-import { relayGateHookAbi } from "../abis/relayGateHookAbi.js";
 
 function generateRequestId(): string {
   return "0x" + randomBytes(32).toString("hex"); // Generates a 64-character hex string (32 bytes)
@@ -51,7 +50,7 @@ export async function getCalldata({
       `,
     variables: vars,
   });
-  const req = new Request("https://api.stg.cyberconnect.dev/iro/", {
+  const req = new Request(process.env.NEXT_PUBLIC_IRO_API_GATE as string, {
     method: "POST",
     headers: {
       "Accept-Encoding": "gzip, deflate, br",
@@ -75,7 +74,7 @@ export async function getContactAddress({
   chainId: string;
 }) {
   const req = new Request(
-    `https://api.stg.cyberconnect.dev/heracles/contracts?contract_names=${name}`,
+    `${process.env.NEXT_PUBLIC_HERACLE_API_BASE}/contracts?contract_names=${name}`,
     {
       method: "GET",
       headers: {
@@ -128,7 +127,7 @@ export async function getNftInfo({ id }: { id: string }) {
       `,
     variables: vars,
   });
-  const req = new Request("https://api.stg.cyberconnect.dev/iro/", {
+  const req = new Request(process.env.NEXT_PUBLIC_IRO_API_GATE as string, {
     method: "POST",
     headers: {
       "Accept-Encoding": "gzip, deflate, br",
