@@ -72,6 +72,7 @@ app.transaction("/mintNft/:nftId", async (c) => {
 app.frame("/mint/:nftId", async (c) => {
   const { nftId } = c.req.param();
   const referral = c.req.query("refer");
+  const referQuery = referral ? `?refer=${referral}` : "";
   const data = await getNftInfo({
     id: nftId,
   });
@@ -96,10 +97,14 @@ app.frame("/mint/:nftId", async (c) => {
       </div>
     ),
     intents: [
-      <Button.Transaction target={`/mintNft/${nftId}?refer=${referral}`}>
+      <Button.Transaction target={`/mintNft/${nftId}${referQuery}`}>
         Mint
       </Button.Transaction>,
-      <Button.Link href={`${process.env.NEXT_PUBLIC_IRO_PUBLIC_SITE_URL as string}/mint/${nftId}`}>
+      <Button.Link
+        href={`${
+          process.env.NEXT_PUBLIC_IRO_PUBLIC_SITE_URL as string
+        }/mint/${nftId}`}
+      >
         View on Iro
       </Button.Link>,
     ],

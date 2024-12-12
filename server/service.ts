@@ -111,13 +111,6 @@ export async function getNftInfo({ id }: { id: string }) {
               contract
               ethPrice
               usdPrice
-              creator {
-                displayName {
-                  displayName
-                }
-                avatar
-                formattedAddress
-              }
             }
             totalMintedAmount
             deadline
