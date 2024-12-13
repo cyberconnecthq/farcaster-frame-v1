@@ -93,6 +93,14 @@ app.frame("/mint/:nftId", async (c) => {
             height: 760,
           }}
           src={data.image}
+          onClick={() =>
+            window.open(
+              `${
+                process.env.NEXT_PUBLIC_IRO_PUBLIC_SITE_URL as string
+              }/mint/${nftId}`,
+              "_blank"
+            )
+          }
         />
       </div>
     ),

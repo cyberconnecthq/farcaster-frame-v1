@@ -9,7 +9,7 @@ const baseClient = createPublicClient({
 
 const opSepoliaClient = createPublicClient({
   chain: optimismSepolia,
-  transport: http(),
+  transport: http("https://api.zan.top/opt-sepolia"),
 });
 
 export const client = isPrd ? baseClient : opSepoliaClient;
