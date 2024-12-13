@@ -2,6 +2,9 @@ import { config } from "dotenv";
 config();
 import { parseEther } from "viem";
 import { randomBytes } from "crypto";
+import { selectedChainId, targetChainId } from "../types.js";
+import { relayGateHookAbi } from "../abis/relayGateHookAbi.js";
+import { client } from "./client.js";
 
 function generateRequestId(): string {
   return "0x" + randomBytes(32).toString("hex"); // Generates a 64-character hex string (32 bytes)
@@ -88,6 +91,7 @@ export async function getContactAddress({
 
   const res = await fetch(req);
   const { data } = await res.json();
+  console.log("🚀 ~ getContactAddress ~ data:", JSON.stringify(data));
   return data?.list?.[0]?.chain_map?.[chainId]?.address;
 }
 
@@ -141,26 +145,23 @@ export async function getNftInfo({ id }: { id: string }) {
 }
 
 export async function getCrossMintFee() {
-  // console.log("🚀 ~ app.transaction ~ start");
-  // const relayGateHookContractAddress = await getContactAddress({
-  //   name: "contract_cyber_relay_gate_hook_yume",
-  //   chainId: String(selectedChainId),
-  // });
-  // const readRes = (await client.readContract({
-  //   address: relayGateHookContractAddress || "0x",
-  //   abi: relayGateHookAbi,
-  //   functionName: "mintFeeConfigs",
-  //   args: [targetChainId],
-  // })) as { data: any };
-  // const crossMintFeeData = readRes.data;
-  // console.log("🚀 ~ app.transaction ~ cross mint data", crossMintFeeData);
+  const relayGateHookContractAddress = await getContactAddress({
+    name: "contract_cyber_relay_gate_hook_yume",
+    chainId: String(selectedChainId),
+  });
+  const readRes = (await client.readContract({
+    address: relayGateHookContractAddress || "0x",
+    abi: relayGateHookAbi,
+    functionName: "mintFeeConfigs",
+    args: [targetChainId],
+  })) as { data: any };
+  const crossMintFeeData = readRes;
 
-  // const crossMintFee =
-  //   Array.isArray(crossMintFeeData) && crossMintFeeData.length > 2
-  //     ? crossMintFeeData[2]
-  //     : BigInt(0);
-  // console.log("🚀 ~ app.transaction ~ cross mint fee", crossMintFee);
+  const crossMintFee =
+    Array.isArray(crossMintFeeData) && crossMintFeeData.length > 2
+      ? crossMintFeeData[2]
+      : BigInt(0);
+  console.log("🚀 ~ app.transaction ~ cross mint fee", crossMintFee);
 
-  // return crossMintFee;
-  return 40000000000000n;
+  return crossMintFee;
 }
