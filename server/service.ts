@@ -162,5 +162,5 @@ export async function getCrossMintFee() {
   // console.log("🚀 ~ app.transaction ~ cross mint fee", crossMintFee);
 
   // return crossMintFee;
-  return 100000000000000n;
+  return 40000000000000n;
 }
