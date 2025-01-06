@@ -138,7 +138,9 @@ export async function getNftInfo({ id }: { id: string }) {
     body: body,
   });
   const res = await fetch(req);
+  console.log("🚀 ~ getNftInfo ~ req:", req)
   const data = await res.json();
+  console.log("🚀 ~ getNftInfo ~ data:", data)
 
   console.log(
     "🚀 ~ getNftInfo ~ data:",
