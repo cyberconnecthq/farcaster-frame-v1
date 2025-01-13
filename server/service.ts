@@ -99,9 +99,7 @@ export async function getNftInfo({ id }: { id: string }) {
     query: `
       query nft($id: ID!) {
         nft(id: $id) {
-          status
-          nft {
-            nftId
+          nftId
             metadata {
               name
               description
@@ -114,7 +112,6 @@ export async function getNftInfo({ id }: { id: string }) {
             }
             totalMintedAmount
             deadline
-          }
         }
       }
       `,
@@ -131,15 +128,13 @@ export async function getNftInfo({ id }: { id: string }) {
     body: body,
   });
   const res = await fetch(req);
-  console.log("🚀 ~ getNftInfo ~ req:", req)
   const data = await res.json();
-  console.log("🚀 ~ getNftInfo ~ data:", data)
 
   console.log(
     "🚀 ~ getNftInfo ~ data:",
-    JSON.stringify(data.data.nft.nft.metadata)
+    JSON.stringify(data.data.nft.metadata)
   );
-  return data.data.nft.nft.metadata;
+  return data.data.nft.metadata;
 }
 
 export async function getCrossMintFee() {
